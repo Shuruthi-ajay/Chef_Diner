@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Play Game</title>
+  <link rel="icon" type="image/x-icon" href="chef.png">
+  <link rel="stylesheet" href="openstyle.css">
+  <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans&display=swap" rel="stylesheet">
+
+  
+</head>
+
+<body onload="startGame()">
+  <div id="game-container">
+    <div id="lives">
+      <span class="heart"><img src="digital.png" height="50px" width="50px"></span>
+      <span class="heart"><img src="digital.png" height="50px" width="50px"></span>
+      <span class="heart"><img src="digital.png" height="50px" width="50px"></span>
+    </div>
+    <div id="score" class="score-1">Score: 0</div>
+    <button onclick="pausegame()" class="pause-btn">| |</button>
+
+    <div id="game-screen">
+      <div id="character-container">
+        <img id="character-img" src="c1.png" alt="Customer">
+        <button class="input-btn" onclick="genReq()" class="glossy-button">❗</button>
+      </div>
+    </div>
+
+    <div id="request-dialog" class="popup">
+      <h2>Request</h2>
+      <p id="request-text"></p>
+      <button onclick="handleReqacc()" class="glossy-button" >Accept</button>
+      <button onclick="handleReqrej()" class="glossy-button" >Reject</button>
+    </div>
+
+    <div id="pause-popup" class="popup" style="display: none;">
+      <p>Paused</p>
+      <button onclick="gogame()" class="glossy-button">Resume</button>
+      <button onclick="gomm()" class="glossy-button" >Main Menu</button>
+    </div>
+
+    <div id="game-over-popup" class="popup" style="display: none;">
+      <p>Game Over!</p>
+      <p id="final-score">Score: 0</p>
+      <button onclick="gomm()" class="glossy-button">Main Menu</button>
+    </div>
+
+    <div id="message" style="display: none;">Oops! Wrong Option</div>
+  </div>
+
+  <script>
+    let lives = 3;
+    let score = 0;
+    let reqnum;
+    let previousCharacter = null;
+
+    const characters = ['c1.png', 'c2.png', 'c3.png'];
+
+    const requests = [
+      { type: 'good', text: 'Install a trusted antivirus.', hint: 'From a verified vendor.', ans: 'accept' },
+      { type: 'bad', text: 'Click this link for a free prize!', hint: 'Unknown source. Proceed with caution.', ans: 'reject' },
+      { type: 'good', text: 'Allow access to a known website.', hint: 'Safe and secure.', ans: 'accept' },
+      { type: 'bad', text: 'Grant unnecessary permissions.', hint: 'Suspicious request.', ans: 'reject' },
+    ];
+
+    function startGame() {
+      lives = 3;
+      score = 0;
+      updateScore();
+      updateLivesDisplay();
+      showCharacter();
+    }
+
+    function pausegame() {
+      document.getElementById('pause-popup').style.display = 'block';
+    }
+
+    function gogame() {
+      document.getElementById('pause-popup').style.display = 'none';
+      document.getElementById('request-dialog').style.display = 'none';
+    }
+
+    function gomm() {
+      window.location.href = "open_page.html";
+    }
+
+    function genReq() {
+      reqnum = Math.floor(Math.random() * requests.length);
+      document.getElementById('request-text').innerHTML = requests[reqnum].text;
+      document.getElementById('request-dialog').style.display = 'block';
+    }
+
+    function handleReqacc() {
+      if (requests[reqnum].ans === 'accept') {
+        score += 10;
+        updateScore();
+        nextCharacter();
+      } else {
+        loselife();
+      }
+      document.querySelector('.input-btn').style.display = 'none'; 
+    }
+
+    function handleReqrej() {
+      if (requests[reqnum].ans === 'reject') {
+        score += 10;
+        updateScore();
+        nextCharacter();
+      } else {
+        loselife();
+      }
+      document.querySelector('.input-btn').style.display = 'none'; 
+    }
+
+    function loselife() {
+      lives--;
+      document.getElementById('message').style.display = 'block';
+      setTimeout(() => {
+        document.getElementById('message').style.display = 'none';
+      }, 2000);
+      document.getElementById('request-dialog').style.display = 'none';
+      updateLivesDisplay();
+
+      if (lives === 0) {
+        endgame();
+      } else {
+        nextCharacter();
+      }
+    }
+
+    function updateScore() {
+      document.getElementById('score').innerText = Score: ${score};
+    }
+
+    function updateLivesDisplay() {
+      const hearts = document.querySelectorAll('.heart');
+      hearts.forEach((heart, index) => {
+        heart.style.display = index < lives ? 'inline' : 'none';
+      });
+    }
+
+    function endgame() {
+      document.getElementById('game-over-popup').style.display = 'block';
+      document.getElementById('final-score').innerText = Score: ${score};
+      document.getElementById('request-dialog').style.display = 'none';
+    }
+
+    function getRandomCharacterExcluding(previous) {
+      const options = characters.filter(c => c !== previous);
+      return options[Math.floor(Math.random() * options.length)];
+    }
+
+    function showCharacter() {
+      const container = document.getElementById('character-container');
+      const img = document.getElementById('character-img');
+      const nextChar = getRandomCharacterExcluding(previousCharacter);
+      previousCharacter = nextChar;
+      img.src = nextChar;
+
+      container.style.transition = 'none';
+      container.style.right = '-150px';
+
+      setTimeout(() => {
+        container.style.transition = 'right 4s ease';
+        
+        container.style.right = '800px'; // Slide in
+      }, 50);
+    }
+
+    function nextCharacter() {
+      document.getElementById('request-dialog').style.display = 'none';
+      const container = document.getElementById('character-container');
+
+      container.style.transition = 'right 4s ease';
+      container.style.right = '-150px'; // Slide out
+
+      setTimeout(() => {
+        showCharacter();
+        document.querySelector('.input-btn').style.display = 'inline';  // Bring next one in
+      }, 2000);
+    }
+  </script>
+</body>
+</html>

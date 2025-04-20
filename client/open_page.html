@@ -5,15 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Home</title>
   <link rel="icon" type="image/x-icon" href="chef.png">
+  <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans&display=swap" rel="stylesheet">
+
   <style>
     body {
-      background-image: url("newback.png");
+      background-image: url("openpage.png");
       background-position: center;
       background-repeat: no-repeat;
       background-size: cover;
       background-attachment: fixed;
       text-align: center;
-      font-family: Arial, sans-serif;
+      font-family: 'Pixelify Sans', sans-serif;
+
     }
 
     .button-container {
@@ -26,7 +29,6 @@
       padding-bottom: 300px;
     }
 
-
     .glossy-button {
       background: linear-gradient(to top, #d7b3f6, #ffffff 30%);
       border: 2px solid #8158A9;
@@ -36,7 +38,7 @@
       height: 50px;
       color: #47126b;
       font-size: 16px;
-      font-weight: bold;
+      font-family: 'Montserrat', sans-serif;
       margin: 10px;
       cursor: pointer;
       box-shadow: inset 0 1px 0 #fff, 0 4px 6px rgba(0, 0, 0, 0.3);
@@ -52,33 +54,37 @@
       transform: translateY(1px);
       box-shadow: inset 0 1px 0 #fff, 0 2px 4px rgba(0, 0, 0, 0.2);
     }
-
+    
     .popup {
-      display: none;
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: #dbb7cd;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
-    }
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: linear-gradient(135deg, rgba(128, 73, 143, 0.9), rgba(166, 76, 136, 0.9));
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  width: 30%;
+  font-family: 'Nunito', sans-serif;
+  color: #f8f8f8;
+}
 
     .overlay {
       display: none;
       position: fixed;
       top: 0;
       left: 0;
-      width: 100%;
+      width: 600%;
       height: 100%;
-      background: rgba(0, 0, 0, 0.5);
+      background: rgba(230, 46, 46, 0.5);
     }
   </style>
 </head>
 <body>
 
-  <div id="score"></div>
+  <div id="score" class="score"></div>
   
   <div class="button-container">
     <button id="play-btn" onclick="playGame()" class="glossy-button">PLAY</button>
@@ -94,16 +100,6 @@
     <p>4. Earn points for correct decisions and lose lives for incorrect ones.</p>
     <button onclick="closeInstructions()" class="glossy-button">Back</button>
   </div>
-
-  <div class="popup" id="instructionBox">
-    <h2>Instructions</h2>
-    <p>1. Read the customer's request carefully.</p>
-    <p>2. Decide if the request is good or bad.</p>
-    <p>3. Click "Submit" if it's a good request or "Reject" if it's bad.</p>
-    <p>4. Earn points for correct decisions and lose lives for incorrect ones.</p>
-    <button onclick="closeInstructions()">Back</button>
-  </div>
-  
   <script>
     window.onload = showScore;
     async function showScore(){
@@ -143,5 +139,3 @@
   </script>
 </body>
 </html>
-
-
